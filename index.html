@@ -9,7 +9,7 @@
     <h1>Home</h1>
     <script type="module">
         // mqtt server over ws
-        let client = mqtt.connect("ws://104.248.92.31:8083/mqtt");
+        let client = mqtt.connect("wss://mqtt.jaydoncheng.me:8084/mqtt");
 
         client.on("connect", () => {
             client.subscribe("presence", (err) => {
