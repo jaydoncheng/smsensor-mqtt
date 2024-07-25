@@ -52,11 +52,14 @@
 
         if (room) {
             document.getElementById('roomId').innerText = `Room: ${room}`;
+            document.getElementById('accelPermsButton').addEventListener('click', () => {
+                s.connect();
+            });
         }
 
     </script>
     <p>The browser needs permission to read your phone's sensors.</p>
-    <button id="accelPermsButton" onclick="s.connect()">Tap here to give permission</button>
+    <button id="accelPermsButton">Tap here to give permission</button>
     <span style="font-size: 0.6em; color: gray;" id="roomId">Room:</span>
     <div id="debug" style="color: gray; font-size: 0.6em">Connecting...</div>
 
