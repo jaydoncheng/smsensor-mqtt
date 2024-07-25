@@ -22,11 +22,15 @@ export default class SensorAPI {
 
         if (typeof DeviceMotionEvent.requestPermission === 'function') {
             debug('DeviceMotionEvent.requestPermission is a function.')
+
             DeviceMotionEvent.requestPermission()
-                .then(permissionState => { 
+                .then(permissionState => {
                     debug('permissionState: ' + permissionState);
-                    return permissionState === 'granted'; 
-                }).catch(error => { 
+                    if (permissionState === 'granted') {
+                        this.addSensors();
+                    }
+                    return permissionState === 'granted';
+                }).catch(error => {
                     debug('requestPermission error: ' + error);
                     return false;
                 });
@@ -37,37 +41,34 @@ export default class SensorAPI {
         debug('Requested permission for Motion Events.');
     }
 
-    startSensors() {
+    addSensors() {
         const publish = (_topic, message) => {
-            this.mqttclient.publish(`rooms/${this.room_id}/${this.client_id}/${_topic}`, message);
+            const t = `rooms/${this.room_id}/${this.client_id}/${_topic}`;
+            this.mqttclient.publish(t, message);
         }
-        const p = this.requestPermission();
-        debug('request permission: ' + p);
-        if (p) {
-            window.addEventListener('devicemotion', (event) => {
-                publish('devicemotion', JSON.stringify({
-                    client_id: this.client_id,
-                    type: event.type,
-                    timestamp: event.timeStamp,
-                    x: event.acceleration.x,
-                    y: event.acceleration.y,
-                    z: event.acceleration.z,
-                    xg: event.accelerationIncludingGravity.x,
-                    yg: event.accelerationIncludingGravity.y,
-                    zg: event.accelerationIncludingGravity.z,
-                }));
-            });
-            window.addEventListener('deviceorientation', (event) => {
-                publish('deviceorientation', JSON.stringify({
-                    client_id: this.client_id,
-                    type: event.type,
-                    timestamp: event.timeStamp,
-                    alpha: event.alpha,
-                    beta: event.beta,
-                    gamma: event.gamma,
-                }))
-            })
-        }
+        window.addEventListener('devicemotion', (event) => {
+            publish('devicemotion', JSON.stringify({
+                client_id: this.client_id,
+                type: event.type,
+                timestamp: event.timeStamp,
+                x: event.acceleration.x,
+                y: event.acceleration.y,
+                z: event.acceleration.z,
+                xg: event.accelerationIncludingGravity.x,
+                yg: event.accelerationIncludingGravity.y,
+                zg: event.accelerationIncludingGravity.z,
+            }));
+        });
+        window.addEventListener('deviceorientation', (event) => {
+            publish('deviceorientation', JSON.stringify({
+                client_id: this.client_id,
+                type: event.type,
+                timestamp: event.timeStamp,
+                alpha: event.alpha,
+                beta: event.beta,
+                gamma: event.gamma,
+            }))
+        })
     }
 
     connect(room_id = this.room_id) {
@@ -81,7 +82,6 @@ export default class SensorAPI {
         this.mqttclient.on("connect", () => {
             this.mqttclient.subscribe(topic + '/#', (err) => {
                 if (!err) {
-                    this.startSensors();
                     this.mqttclient.publish(topic, "Hello mqtt from " + this.client_id);
                 }
             });

@@ -55,10 +55,10 @@
         }
 
         if (room) {
+            s.connect(room);
             document.getElementById('roomId').innerText = `Room: ${room}`;
             document.getElementById('accelPermsButton').addEventListener('click', () => {
-                debug('Hit connect');
-                s.connect(room);
+                s.requestPermission();
             });
         }
 
