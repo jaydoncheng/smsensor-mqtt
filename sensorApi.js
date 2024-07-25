@@ -1,5 +1,4 @@
-const address = "wss://mqtt.jaydoncheng.me:8084/mqtt";
-export class SensorAPI {
+export default class SensorAPI {
 
     mqttclient; address;
     room_id; client_id;
