@@ -20,13 +20,17 @@ export default class SensorAPI {
         }
 
         if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            debug('DeviceMotionEvent.requestPermission is a function.')
             DeviceMotionEvent.requestPermission()
                 .then(permissionState => { 
                     debug('permissionState: ' + permissionState);
                     return permissionState === 'granted'; 
-                }).catch(console.error);
+                }).catch(error => { 
+                    debug('requestPermission error: ' + error);
+                    return false;
+                }
         } else {
-            debug('DeviceMotionEvent requestPermission is not a function.');
+            debug('DeviceMotionEvent.requestPermission is not a function.');
             return false;
         }
     }
