@@ -28,7 +28,7 @@ export default class SensorAPI {
                 }).catch(error => { 
                     debug('requestPermission error: ' + error);
                     return false;
-                }
+                });
         } else {
             debug('DeviceMotionEvent.requestPermission is not a function.');
             return false;
