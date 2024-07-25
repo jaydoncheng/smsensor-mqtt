@@ -47,7 +47,8 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const room = urlParams.get('room');
-        const s = SensorApi("wss://mqtt.jaydoncheng.me:8084/mqtt", room)
+        console.log(room);
+        const s = new SensorApi("wss://mqtt.jaydoncheng.me:8084/mqtt", room)
 
         if (room) {
             document.getElementById('roomId').innerText = `Room: ${room}`;

@@ -64,8 +64,7 @@ export default class SensorAPI {
         });
 
         this.mqttclient.on("message", (topic, message) => {
-            // message is Buffer
-            console.log(message.toString());
+            console.log(topic, message.toString());
             this.mqttclient.end();
         });
     }
