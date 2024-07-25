@@ -42,7 +42,8 @@
 </head>
 
 <body>
-    <script>
+    <script type="module">
+        import SensorApi from './sensorApi.js';
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const room = urlParams.get('room');
