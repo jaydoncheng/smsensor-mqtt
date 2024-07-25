@@ -9,7 +9,9 @@ export default class SensorAPI {
 
     constructor(_address, _room_id) {
         this.address = _address;
+        const d = Date.now().toString();
         this.client_id = '' + Math.floor(Math.random() * 1000000);
+        this.client_id = d + this.client_id;
         this.room_id = _room_id;
     }
 
@@ -44,7 +46,6 @@ export default class SensorAPI {
     addSensors() {
         const publish = (_topic, message) => {
             const t = `rooms/${this.room_id}/${this.client_id}/${_topic}`;
-            debug('Publishing to ' + t);
             this.mqttclient.publish(t, message);
         }
         window.addEventListener('devicemotion', (event) => {
