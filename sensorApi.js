@@ -1,3 +1,7 @@
+function debug(msg) {
+    document.getElementById('debug').innerText += '\n' + msg;
+}
+
 export default class SensorAPI {
 
     mqttclient; address;
@@ -10,6 +14,11 @@ export default class SensorAPI {
     }
 
     requestPermission() {
+        if (typeof DeviceMotionEvent === 'undefined') {
+            debug('This device does not support Motion Events.');
+            return false;
+        }
+
         if (typeof DeviceMotionEvent.requestPermission === 'function') {
             DeviceMotionEvent.requestPermission()
                 .then(permissionState => { return permissionState === 'granted'; })
@@ -20,11 +29,13 @@ export default class SensorAPI {
     }
 
     startSensors() {
-        const topic = "rooms/" + this.room_id;
+        const publish = (_topic, message) => {
+            this.mqttclient.publish(`rooms/${this.room_id}/${topic}/${this.client_id}/${_topic}`, message);
+        }
         if (this.requestPermission()) {
+            debug('Permission granted');
             window.addEventListener('devicemotion', (event) => {
-                const _topic = topic + '/' + this.client_id + '/' + 'devicemotion';
-                this.mqttclient.publish(_topic, JSON.stringify({
+                publish('devicemotion', JSON.stringify({
                     client_id: this.client_id,
                     type: event.type,
                     timestamp: event.timeStamp,
@@ -37,8 +48,7 @@ export default class SensorAPI {
                 }));
             });
             window.addEventListener('deviceorientation', (event) => {
-                const _topic = topic + '/' + this.client_id + '/' + 'deviceorientation';
-                this.mqttclient.publish(_topic, JSON.stringify({
+                publish('deviceorientation', JSON.stringify({
                     client_id: this.client_id,
                     type: event.type,
                     timestamp: event.timeStamp,
@@ -47,26 +57,28 @@ export default class SensorAPI {
                     gamma: event.gamma,
                 }))
             })
+        } else {
+            debug('Permission denied');
         }
     }
 
     connect(room_id = this.room_id) {
         this.room_id = room_id;
         const topic = "rooms/" + room_id;
-        console.log('connecting to ' + this.room_id);
+        debug('Connecting to ' + this.room_id);
         this.mqttclient = mqtt.connect(this.address);
         this.mqttclient.on("connect", () => {
             this.mqttclient.subscribe(topic + '/#', (err) => {
                 if (!err) {
                     this.startSensors();
-                    this.mqttclient.publish(topic, "Hello mqtt");
+                    this.mqttclient.publish(topic, "Hello mqtt from " + this.client_id);
                 }
             });
         });
 
         this.mqttclient.on("message", (topic, message) => {
             console.log(topic, message.toString());
-            this.mqttclient.end();
+            debug(message.toString());
         });
     }
 }

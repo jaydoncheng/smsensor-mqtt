@@ -50,10 +50,15 @@
         console.log(room);
         const s = new SensorApi("wss://mqtt.jaydoncheng.me:8084/mqtt", room)
 
+        function debug(msg) {
+            document.getElementById('debug').innerText += '\n' + msg;
+        }
+
         if (room) {
             document.getElementById('roomId').innerText = `Room: ${room}`;
             document.getElementById('accelPermsButton').addEventListener('click', () => {
                 s.connect(room);
+                debug('Hit connect');
             });
         }
 
@@ -61,6 +66,6 @@
     <p>The browser needs permission to read your phone's sensors.</p>
     <button id="accelPermsButton">Tap here to give permission</button>
     <span style="font-size: 0.6em; color: gray;" id="roomId">Room:</span>
-    <div id="debug" style="color: gray; font-size: 0.6em">Connecting...</div>
+    <div id="debug" style="color: gray; font-size: 0.6em"></div>
 
 </html>
