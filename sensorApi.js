@@ -84,7 +84,7 @@ export default class SensorAPI {
         this.mqttclient.on("connect", () => {
             this.mqttclient.subscribe(topic + '/#', (err) => {
                 if (!err) {
-                    this.mqttclient.publish(topic, "Hello mqtt from " + this.client_id);
+                    this.mqttclient.publish(topic + '/clients', this.client_id);
                 }
             });
         });
