@@ -53,7 +53,7 @@
         if (room) {
             document.getElementById('roomId').innerText = `Room: ${room}`;
             document.getElementById('accelPermsButton').addEventListener('click', () => {
-                s.connect();
+                s.connect(room);
             });
         }
 
