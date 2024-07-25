@@ -24,16 +24,18 @@ export default class SensorAPI {
                 .then(permissionState => { return permissionState === 'granted'; })
                 .catch(console.error);
         } else {
+            debug('DeviceMotionEvent requestPermission is not a function.');
             return false;
         }
     }
 
     startSensors() {
         const publish = (_topic, message) => {
-            this.mqttclient.publish(`rooms/${this.room_id}/${topic}/${this.client_id}/${_topic}`, message);
+            this.mqttclient.publish(`rooms/${this.room_id}/${this.client_id}/${_topic}`, message);
         }
-        if (this.requestPermission()) {
-            debug('Permission granted');
+        const p = this.requestPermission();
+        debug('request permission: ' + p);
+        if (p) {
             window.addEventListener('devicemotion', (event) => {
                 publish('devicemotion', JSON.stringify({
                     client_id: this.client_id,
@@ -57,15 +59,16 @@ export default class SensorAPI {
                     gamma: event.gamma,
                 }))
             })
-        } else {
-            debug('Permission denied');
         }
     }
 
     connect(room_id = this.room_id) {
+        if (this.mqttclient) { this.mqttclient.end(); }
+
         this.room_id = room_id;
         const topic = "rooms/" + room_id;
         debug('Connecting to ' + this.room_id);
+
         this.mqttclient = mqtt.connect(this.address);
         this.mqttclient.on("connect", () => {
             this.mqttclient.subscribe(topic + '/#', (err) => {

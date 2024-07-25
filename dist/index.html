@@ -4,7 +4,6 @@
     <title>Sensor Reading</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/mqtt@4.3.8/dist/mqtt.js"></script>
-    <script type="module" src="./sensorApi.js"></script>
 
     <style>
         * {
@@ -39,30 +38,10 @@
             cursor: pointer;
         }
     </style>
+  <script type="module" crossorigin src="/assets/index-DRvSTh2m.js"></script>
 </head>
 
 <body>
-    <script type="module">
-        import SensorApi from './sensorApi.js';
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const room = urlParams.get('room');
-        console.log(room);
-        const s = new SensorApi("wss://mqtt.jaydoncheng.me:8084/mqtt", room)
-
-        function debug(msg) {
-            document.getElementById('debug').innerText += '\n' + msg;
-        }
-
-        if (room) {
-            document.getElementById('roomId').innerText = `Room: ${room}`;
-            document.getElementById('accelPermsButton').addEventListener('click', () => {
-                debug('Hit connect');
-                s.connect(room);
-            });
-        }
-
-    </script>
     <p>The browser needs permission to read your phone's sensors.</p>
     <button id="accelPermsButton">Tap here to give permission</button>
     <span style="font-size: 0.6em; color: gray;" id="roomId">Room:</span>
