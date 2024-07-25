@@ -91,7 +91,6 @@ export default class SensorAPI {
 
         this.mqttclient.on("message", (topic, message) => {
             console.log(topic, message.toString());
-            debug(message.toString());
         });
     }
 }

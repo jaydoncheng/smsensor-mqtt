@@ -59,11 +59,14 @@
             document.getElementById('roomId').innerText = `Room: ${room}`;
             document.getElementById('accelPermsButton').addEventListener('click', () => {
                 s.requestPermission();
+                document.getElementById('active').style.display = 'block';
+                document.getElementById('accelPermsButton').style.display = 'none';
             });
         }
 
     </script>
     <p>The browser needs permission to read your phone's sensors.</p>
+    <p style="display: none" id="active">The sensor data from your phone's accelerometer and gyroscope are being sent</p>
     <button id="accelPermsButton">Tap here to give permission</button>
     <span style="font-size: 0.6em; color: gray;" id="roomId">Room:</span>
     <div id="debug" style="color: gray; font-size: 0.6em"></div>
