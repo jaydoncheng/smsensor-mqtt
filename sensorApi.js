@@ -14,6 +14,7 @@ export default class SensorAPI {
     }
 
     requestPermission() {
+        debug('Requesting permission for Motion Events.');
         if (typeof DeviceMotionEvent === 'undefined') {
             debug('This device does not support Motion Events.');
             return false;
@@ -33,6 +34,7 @@ export default class SensorAPI {
             debug('DeviceMotionEvent.requestPermission is not a function.');
             return false;
         }
+        debug('Requested permission for Motion Events.');
     }
 
     startSensors() {
