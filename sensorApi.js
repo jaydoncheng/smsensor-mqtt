@@ -44,6 +44,7 @@ export default class SensorAPI {
     addSensors() {
         const publish = (_topic, message) => {
             const t = `rooms/${this.room_id}/${this.client_id}/${_topic}`;
+            debug('Publishing to ' + t);
             this.mqttclient.publish(t, message);
         }
         window.addEventListener('devicemotion', (event) => {
