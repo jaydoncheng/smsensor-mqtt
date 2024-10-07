@@ -3,7 +3,6 @@
 <head>
     <title>Sensor Reading</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/mqtt@4.3.8/dist/mqtt.js"></script>
     <script type="module" src="./sensorApi.js"></script>
 
     <style>
@@ -48,7 +47,7 @@
         const urlParams = new URLSearchParams(queryString);
         const room = urlParams.get('room');
         console.log(room);
-        const s = new SensorApi("wss://mqtt.jaydoncheng.me:8084/mqtt", room)
+        const s = new SensorApi("wss://smsemsors.jaydoncheng.me:8084/mqtt", room)
 
         function debug(msg) {
             document.getElementById('debug').innerText += '\n' + msg;
