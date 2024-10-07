@@ -85,7 +85,7 @@ export default class SensorAPI {
 
         this.room_id = room_id
         const topic = 'rooms/' + room_id
-        debug('Connecting to ' + this.room_id)
+        debug('Connecting to ' + this.address + '/' + room_id + ' as ' + this.client_id)
 
         // this.mqttclient.on("connect", () => {
         //     this.mqttclient.subscribe(topic + '/#', (err) => {
