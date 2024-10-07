@@ -101,6 +101,7 @@ export default class SensorAPI {
 
         const wsclient = (this.wsclient = new WebSocket(this.address))
         wsclient.addEventListener('open', () => {
+            debug('Connected to ' + this.room_id)
             // wsclient.send("sub_" + this.room_id)
         })
 
