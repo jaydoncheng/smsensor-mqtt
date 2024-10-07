@@ -47,7 +47,7 @@
         const urlParams = new URLSearchParams(queryString);
         const room = urlParams.get('room');
         console.log(room);
-        const s = new SensorApi("wss://smsemsors.jaydoncheng.me:8084/mqtt", room)
+        const s = new SensorApi("wss://smsemsors.jaydoncheng.me:8000", room)
 
         function debug(msg) {
             document.getElementById('debug').innerText += '\n' + msg;

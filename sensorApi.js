@@ -52,9 +52,7 @@ export default class SensorAPI {
             this.wsclient.send(t + ' ' + message)
         }
         window.addEventListener('devicemotion', (event) => {
-            publish(
-                'devicemotion',
-                JSON.stringify({
+            publish('devicemotion', JSON.stringify({
                     client_id: this.client_id,
                     type: event.type,
                     timestamp: event.timeStamp,
@@ -68,9 +66,7 @@ export default class SensorAPI {
             )
         })
         window.addEventListener('deviceorientation', (event) => {
-            publish(
-                'deviceorientation',
-                JSON.stringify({
+            publish('deviceorientation', JSON.stringify({
                     client_id: this.client_id,
                     type: event.type,
                     timestamp: event.timeStamp,
